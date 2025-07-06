@@ -1,0 +1,244 @@
+.home {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  gap: 2rem;
+  column-gap: 0;
+  grid-template-columns: 6fr 1fr;
+  position: relative;
+  padding: 0 2rem;
+}
+
+.container {
+  max-width: 120rem;
+  margin: 0 auto;
+}
+
+.section-hero {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 1fr 35rem;
+  gap: 3rem;
+  align-items: center;
+  align-self: stretch;
+}
+
+.section-hero::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, #000);
+  z-index: 0;
+}
+
+.trailer {
+  position: absolute;
+  width: 120%;
+  height: 190%;
+  top: -47%;
+  z-index: 0;
+  transform: translateX(-10%);
+}
+
+.movie-content {
+  position: relative;
+  color: #fff;
+  padding-left: 0;
+  z-index: 1;
+}
+
+.movie-title {
+  font-size: 6.4rem;
+  letter-spacing: -1px;
+  margin-bottom: 1rem;
+}
+
+.movie-description {
+  font-size: 1.8rem;
+  width: 70%;
+  word-break: break-all;
+  line-height: 1.4;
+  margin-bottom: 1rem;
+}
+
+.movie-details {
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+}
+
+.movie-tag {
+  color: rgb(255, 255, 255, 0.8);
+  margin-right: 1rem;
+}
+
+.movie-genre {
+  color: rgb(142, 230, 48);
+  margin-right: 1rem;
+}
+
+.release-date {
+  color: #fff;
+  margin-right: 1rem;
+}
+
+.movie-rating {
+  color: #fff;
+  display: flex;
+  align-items: center;
+}
+
+.movie-rating span {
+  background: yellow;
+  color: #000;
+  padding: 0 0.6rem;
+  margin: 0px 0.5rem 0px 0.5rem;
+  font-weight: 500;
+  border-radius: 9px;
+  letter-spacing: 1px;
+}
+
+.movie-rating ion-icon {
+  margin-right: 0.5rem;
+  color: #fff;
+  width: 2rem;
+  height: 2rem;
+}
+
+.btn-watch-more {
+  border: none;
+  padding: 1rem 4rem;
+  font-weight: 400;
+  background-color: #0e7490;
+  border-radius: 50000px;
+  color: #fff;
+  margin-top: 2rem;
+  text-decoration: none;
+  /*   animation: button 0.3s linear infinite; */
+  transition: all 1s;
+  font-size: 2rem;
+}
+
+.btn-watch-more:hover {
+  background-color: #155e75;
+}
+
+.section-movies {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 4rem;
+  row-gap: 3rem;
+  width: 90%;
+  justify-self: end;
+  justify-items: end;
+  margin-top: 3rem;
+}
+
+.section-movies-heading {
+  padding: 1rem 2rem;
+  font-size: 5rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: #06b6d4;
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+
+.movie-card {
+  width: 23rem;
+  height: fit-content;
+  border-radius: 9px;
+  overflow: hidden;
+  display: relative;
+  display: flex;
+  flex-direction: column;
+
+  /*   border: 1px solid ; */
+  box-shadow: 0 0 10px 10px #00000044;
+  color: #fff;
+  font-size: 1.8rem;
+}
+
+.movie-card img {
+  width: 100%;
+  height: 34.5rem;
+}
+
+.movie-base-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.movie-base-title,
+.movie-base-details {
+  padding: 0 0.5rem;
+}
+
+.movie-base-rating {
+  color: #06b6d4;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+}
+
+.movie-base-title {
+  padding-top: 0.5rem;
+  font-size: 2rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.load-more {
+  width: 30rem;
+  height: 5rem;
+  grid-column: 1/-1;
+  color: #06b6d4;
+  border: 1px solid #06b6d4;
+  background-color: inherit;
+  border-radius: 9px;
+  font-size: 2rem;
+  justify-self: center;
+
+  transition: all 1s;
+}
+
+.load-more:hover {
+  color: #fff;
+  background-color: #06b6d4;
+}
+
+@media screen and (max-width: 1400px) {
+  .slider-content {
+    grid-auto-columns: calc((100% / 3));
+    gap: 0;
+  }
+
+  .slider {
+    grid-template-columns: 1fr 73rem 1fr;
+  }
+}
+
+@media screen and (max-width: 1048px) {
+  .slider-content {
+    grid-auto-columns: calc((100% / 2));
+  }
+
+  .slider {
+    grid-template-columns: 1fr 50rem 1fr;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .slider-content {
+    grid-auto-columns: 100%;
+  }
+
+  .slider {
+    grid-template-columns: 1fr 20rem 1fr;
+  }
+}

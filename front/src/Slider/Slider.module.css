@@ -1,0 +1,61 @@
+.sliderWrapper {
+  width: 100%;
+  padding: 2rem 0;
+  display: grid;
+  grid-template-columns: 1fr 97rem 1fr;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+}
+
+.slider {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% / 4)-5rem);
+  gap: 5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+
+.slider .dragging {
+  scroll-behavior: auto;
+  scroll-snap-type: none;
+}
+
+.slider .dragging .card {
+  cursor: grab;
+  user-select: none;
+}
+
+.no-transition {
+  scroll-behavior: auto;
+}
+
+.slider-arrow-left {
+  width: 4rem;
+  height: 4rem;
+  color: white;
+  justify-self: end;
+}
+
+.slider-arrow-right {
+  width: 4rem;
+  height: 4rem;
+  color: white;
+  justify-self: start;
+}
+
+.card {
+  width: 20rem;
+  height: 25rem;
+  overflow: hidden;
+  border-radius: 8px;
+  scroll-snap-align: start;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}

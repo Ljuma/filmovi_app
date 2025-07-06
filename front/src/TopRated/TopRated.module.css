@@ -1,0 +1,36 @@
+.section-top-rated {
+  /* background-color: #00bdff; */
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  align-items: center;
+}
+
+.top-rated {
+  width: 17rem;
+  height: 23rem;
+  border-radius: 9px;
+  justify-content: start;
+  overflow: hidden;
+  position: relative;
+}
+
+.top-rated:first-child::after {
+  content: "Top rated";
+  position: absolute;
+  top: 7%;
+  right: -50%;
+  background-color: var(--boja);
+  padding: 0.8rem 8rem;
+  text-transform: uppercase;
+
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+  transform: rotate(45deg);
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
