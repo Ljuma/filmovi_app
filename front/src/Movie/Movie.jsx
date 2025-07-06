@@ -53,6 +53,8 @@ const Movie = () => {
         reviews: [newReview, ...(prevMovie.reviews || [])],
       }));
 
+      alert("A");
+
       setFormData({
         comment: "",
         rating: "",
