@@ -47,12 +47,12 @@ const login = async (req, res) => {
 const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    const photo = req.file ? `/public/userPhotos/${req.file.filename}` : null;
+    const photo = req.file ? req.file.filename : null;
 
     if (await authRepository.findUserByEmail(email))
       return res.status(400).json({ message: "Email je zauzet!" });
 
-    const hashed = await bcrypt.hash(password, 10); // korišćenje bcrypt sa 10 rundi :contentReference[oaicite:1]{index=1}
+    const hashed = await bcrypt.hash(password, 10);
 
     let u = {};
     u.name = name;
@@ -69,4 +69,52 @@ const register = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+const getUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    let user = await authRepository.getUser(id);
+
+    user.lists = await authRepository.getUserLists(id);
+
+    user.listCount = await authRepository.getUserListCount(id);
+
+    user.numOfReviews = await authRepository.getUserNumOfReviews(id);
+
+    user.avgReview = await authRepository.getUserAvgReview(id);
+
+    console.log(user);
+
+    res
+      .status(200)
+      .json({ message: "Uspjesno uzimanje korisnika.", user: user });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Greška pri uzimanju." });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    let responnse = await authRepository.deleteUser(id);
+
+    res.status(200).json({ message: "Uspjesno brisanje korisnika." });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Greška pri brisanju." });
+  }
+};
+
+const restoreUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    let responnse = await authRepository.restoreUser(id);
+
+    res.status(200).json({ message: "Uspjesno vracanje korisnika." });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Greška pri vracanju." });
+  }
+};
+
+module.exports = { register, login, getUser, deleteUser, restoreUser };

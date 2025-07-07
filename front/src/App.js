@@ -7,6 +7,8 @@ import {
 import LoginRegistration from "./LoginRegistration/LoginRegistration";
 import Home from "./Home/Home";
 import Movie from "./Movie/Movie";
+import Movies from "./Movies/Movies";
+import UserProfile from "./UserProfile/UserProfile";
 import PrivateRoute from "./PrivateRoute";
 
 function App() {
@@ -29,6 +31,24 @@ function App() {
           element={
             <PrivateRoute>
               <Movie />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/user/:id"
+          element={
+            <PrivateRoute>
+              <UserProfile />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/movies"
+          element={
+            <PrivateRoute>
+              <Movies />
             </PrivateRoute>
           }
         />

@@ -1,0 +1,138 @@
+.user-icon {
+  color: #155e75;
+  height: 10rem;
+  width: 10rem;
+}
+
+.user-button {
+  border: none;
+  padding: 1rem 3rem;
+  font-weight: 500;
+  background-color: #0e7490;
+  border-radius: 20px;
+  color: #d0dbdf;
+  text-decoration: none;
+  transition: all 1s;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.user-button:hover {
+  background-color: #155e75;
+}
+
+.user-profile-section {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.main-content {
+  width: 100%;
+  display: flex;
+  gap: 15rem;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.user-profile {
+  display: flex;
+  gap: 10rem;
+  width: 75%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.user-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.user-info {
+  display: flex;
+  gap: 2rem;
+}
+
+.user-name-email {
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+}
+
+.user-name {
+  font-size: 3.5rem;
+}
+
+.lists-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 2rem;
+
+  padding: 1rem;
+  width: 75%;
+}
+
+.list-card {
+  background-color: #06b6d4;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+  cursor: pointer;
+  width: 20rem;
+}
+
+.list-card:hover {
+  transform: translateY(-4px);
+}
+
+.list-name,
+.list-number {
+  color: #111;
+}
+
+.list-name {
+  font-size: 2.5rem;
+  font-weight: 600;
+}
+
+.list-number {
+  color: #111;
+  font-size: 2rem;
+}
+
+.stats-container {
+  display: flex;
+  justify-content: space-around;
+  padding: 2rem 0;
+  background-color: #06b6d4;
+  text-align: center;
+  width: 75%;
+}
+
+.stat-box {
+  flex: 1;
+  margin: 0 1rem;
+}
+
+.stat-number {
+  font-size: 5rem;
+  font-weight: 700;
+  color: #222;
+}
+
+.stat-label {
+  margin-top: 0.5rem;
+  font-size: 2rem;
+  color: #333;
+}
+
+.user-photo {
+  height: 10rem;
+  width: 10rem;
+
+  border-radius: 50px;
+}

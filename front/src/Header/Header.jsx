@@ -10,17 +10,19 @@ class Header extends React.Component {
     this.state = {
       userPhoto: null,
       isAdmin: false,
+      userID: null,
     };
   }
 
   componentDidMount() {
     const userPhoto = localStorage.getItem("userPhoto");
+    const userID = Number(localStorage.getItem("userId"));
     const isAdmin = localStorage.getItem("isAdmin") === "true";
-    this.setState({ userPhoto, isAdmin });
+    this.setState({ userID, userPhoto, isAdmin });
   }
 
   render() {
-    const { userPhoto, isAdmin } = this.state;
+    const { userID, userPhoto, isAdmin } = this.state;
     return (
       <header className={style["section-header"]}>
         <img className={style.logo} alt="logo soon" src="/logo.webp" />
@@ -39,12 +41,9 @@ class Header extends React.Component {
               </Link>
             </li>
             <li>
-              <a
-                className={style["nav-link"]}
-                href="./modalWindowTest/index.html"
-              >
-                List
-              </a>
+              <Link className={style["nav-link"]} to="/movies">
+                Movies
+              </Link>
             </li>
             <li>
               <a className={style["nav-link"]} href="#">
@@ -57,10 +56,7 @@ class Header extends React.Component {
               </a>
             </li>
             <li>
-              <a
-                className={style["nav-link-icon"]}
-                href="/MoviesLoginPage/index.html"
-              >
+              <Link className={style["nav-link-icon"]} to={`/user/${userID}`}>
                 {userPhoto == "null" && userPhoto ? (
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -78,12 +74,12 @@ class Header extends React.Component {
                   </svg>
                 ) : (
                   <img
-                    src={`http://localhost:3001${userPhoto}`}
+                    src={`http://localhost:3001/public/userPhotos/${userPhoto}`}
                     className={style["user-photo"]}
                     alt="User avatar"
                   />
                 )}
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>

@@ -53,8 +53,6 @@ const Movie = () => {
         reviews: [newReview, ...(prevMovie.reviews || [])],
       }));
 
-      alert("A");
-
       setFormData({
         comment: "",
         rating: "",
@@ -211,7 +209,7 @@ const Movie = () => {
               </svg>
             ) : (
               <img
-                src={`http://localhost:3001${userPhoto}`}
+                src={`http://localhost:3001/public/userPhotos/${userPhoto}`}
                 className={styles["user-photo"]}
                 alt="User avatar"
               />
@@ -266,7 +264,7 @@ const Movie = () => {
                 </svg>
               ) : (
                 <img
-                  src={`http://localhost:3001${review.photo}`}
+                  src={`http://localhost:3001/public/userPhotos/${review.photo}`}
                   className={styles["user-photo"]}
                   alt="User avatar"
                 />
