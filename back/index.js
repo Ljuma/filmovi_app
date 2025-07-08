@@ -20,6 +20,9 @@ app.use("/api", movieRouter);
 const reviewRouter = require("./routers/reviewRouter");
 app.use("/api", reviewRouter);
 
+const genreRouter = require("./routers/genreRouter");
+app.use("/api", genreRouter);
+
 app.listen(3001, () => {
   console.log(`Server radi na http://localhost:3001`);
 });

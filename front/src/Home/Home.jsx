@@ -121,7 +121,11 @@ class Home extends React.Component {
           <p className={style["section-movies-heading"]}> Our Best Movies</p>
 
           {movies.map((movie) => (
-            <Link to={`/movie/${movie.movie_id}`} key={movie.mvie_id}>
+            <Link
+              className={style["nav-links"]}
+              to={`/movie/${movie.movie_id}`}
+              key={movie.mvie_id}
+            >
               <div className={style["movie-card"]}>
                 <img src={movie.photo} />
                 <p className={style["movie-base-title"]}>{movie.title}</p>

@@ -61,7 +61,6 @@ const getMovie = async (req, res) => {
     let movie = await movieRepository.getMovie(id);
 
     movie.rating = await movieRepository.getMovieDefaultRating(id);
-    console.log(movie);
 
     let genresDB = await movieRepository.getMovieGenres(id);
     let genres = genresDB.map((g) => g.name);
@@ -81,6 +80,37 @@ const getAllMovies = async (req, res) => {
   try {
     let movies = await movieRepository.getAllMovies();
 
+    let extremeValues = await movieRepository.getExtremeValues();
+
+    res.status(200).json({
+      message: "Uspješno",
+      movies: movies,
+      extremeValues: extremeValues,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Greška pri uzimanju filmova." });
+  }
+};
+
+const filterMovies = async (req, res) => {
+  try {
+    const { minYear, maxYear, minRuntime, maxRuntime, genres, title } =
+      req.query;
+
+    const genreIds = genres ? genres.split(",").map((id) => Number(id)) : [];
+
+    let filter = {
+      minYear: Number(minYear),
+      maxYear: Number(maxYear),
+      minRuntime: Number(minRuntime),
+      maxRuntime: Number(maxRuntime),
+      genres: genreIds,
+      title: title || "",
+    };
+
+    let movies = await movieRepository.filterMovies(filter);
+
     res.status(200).json({
       message: "Uspješno",
       movies: movies,
@@ -97,4 +127,5 @@ module.exports = {
   getMovie,
   getAllMovies,
   getMovieSingle,
+  filterMovies,
 };
