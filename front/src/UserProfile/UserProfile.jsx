@@ -4,6 +4,7 @@ import style from "./UserProfile.module.css";
 import routerHelper from "../routerHelper";
 import Header from "../Header/Header";
 import { routerHelperID } from "../routerHelperID";
+import { Link } from "react-router-dom";
 
 class UserProfile extends React.Component {
   constructor(props) {
@@ -51,6 +52,24 @@ class UserProfile extends React.Component {
       }));
     } catch (err) {
       alert("Gresaka pri brisanju korisnika!");
+    }
+  };
+
+  handleDeleteList = async (id) => {
+    try {
+      const response = await axios.delete(`/deletelist/${id}`);
+
+      this.setState((prevState) => ({
+        user: {
+          ...prevState.user,
+          lists: prevState.user.lists.filter((list) => list.id !== id),
+          listCount: prevState.user.listCount - 1,
+        },
+      }));
+
+      alert(response.data.message);
+    } catch (err) {
+      alert("Gresaka pri vracanju korisnika!");
     }
   };
 
@@ -166,12 +185,23 @@ class UserProfile extends React.Component {
             </div>
 
             <div className={style["lists-container"]}>
-              {user?.lists?.map((list) => {
-                <div className={style["list-card"]}>
-                  <p className={style["list-name"]}>{list.name}</p>
-                  <p className={style["list-number"]}>{list.list_size}</p>
-                </div>;
-              })}
+              {user?.lists?.map((list) => (
+                <Link className={style["nav-link"]} to={`/list/${list.id}`}>
+                  <div key={list.id} className={style["list-card"]}>
+                    <p className={style["list-name"]}>{list.name}</p>
+                    <p className={style["list-number"]}>{list.list_size}</p>
+
+                    {(isAdmin || user.id == activeUserID) && (
+                      <button
+                        onClick={() => this.handleDeleteList(list.id)}
+                        className={style["delete-button"]}
+                      >
+                        ×
+                      </button>
+                    )}
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
         </div>

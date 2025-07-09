@@ -36,8 +36,9 @@ const getUser = async (id) => {
 };
 
 const getUserLists = async (id) => {
-  const query = `SELECT l.id,l.name,COUNT(ml.movie_id) AS list_size FROM list l INNER JOIN movie_list ml ON l.id=ml.list_id  
-WHERE l.user_id=$1 GROUP BY l.id,l.name `;
+  const query = `SELECT l.id,l.name,COUNT(ml.movie_id) AS list_size FROM list l LEFT OUTER JOIN movie_list ml ON l.id=ml.list_id  
+WHERE l.user_id=$1 GROUP BY l.id,l.name
+ `;
   const values = [id];
   const result = await dbConnection.query(query, values);
 

@@ -1,0 +1,99 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 5rem;
+}
+
+.movies {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 23rem));
+  gap: 4rem;
+  row-gap: 3rem;
+  width: 80%;
+  margin-top: 3rem;
+}
+
+.list-details {
+  width: 80%;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+.list-name {
+  font-size: 5rem;
+  color: #06b6d4;
+  font-weight: 500;
+}
+
+.list-count {
+  font-size: 4rem;
+  color: #06b5d480;
+}
+
+.nav-links {
+  text-decoration: none !important;
+}
+
+.movie-card {
+  width: 24rem;
+  height: fit-content;
+  border-radius: 9px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  box-shadow: 0 0 10px 10px #00000044;
+  color: #fff;
+  font-size: 1.8rem;
+}
+
+.movie-card img {
+  width: 100%;
+  height: 34.5rem;
+}
+
+.movie-base-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.movie-base-title,
+.movie-base-details {
+  padding: 0 0.5rem;
+}
+
+.movie-base-rating {
+  color: #06b6d4;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+}
+
+.movie-base-title {
+  padding-top: 0.5rem;
+  font-size: 2rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-decoration: none;
+}
+
+.delete-button {
+  background-color: #06b6d4;
+  border: none;
+  color: #fff;
+
+  font-size: 1.8rem;
+  font-weight: 400;
+  transition: all 1s;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: #155e75;
+}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "../api/axios";
 import { useParams } from "react-router-dom";
-
+import AddToListModal from "../AddToListModal/AddToListModal";
 import styles from "./Movie.module.css";
 import { Link } from "react-router-dom";
 import Header from "../Header/Header";
@@ -21,6 +21,43 @@ const Movie = () => {
     rating: 0,
     comment: "",
   });
+
+  const [userLists, setUserLists] = useState([]);
+
+  const [isListAddModalOpen, setIsListAddModalOpen] = useState(false);
+
+  const openListAddModal = () => {
+    setIsListAddModalOpen(true);
+  };
+
+  const closeListAddModal = () => {
+    setIsListAddModalOpen(false);
+  };
+
+  const handleAddToList = async (movieID, selectedList, listName) => {
+    try {
+      let listID = 0;
+      if (listName) {
+        const payload = {
+          userID: userID,
+          name: listName,
+        };
+
+        const response = await axios.post("/addlist", payload);
+        listID = response.data.listID;
+      } else {
+        listID = selectedList;
+      }
+
+      const response2 = await axios.post(`/addtolist/${listID}`, { movieID });
+
+      alert(response2.data.message);
+    } catch (err) {
+      alert("Greška pri dodavanju na listu.");
+    }
+
+    closeListAddModal();
+  };
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -76,7 +113,10 @@ const Movie = () => {
     const fetchMovie = async () => {
       try {
         const response = await axios.get(`/movie/${id}`);
+        const response2 = await axios.get(`/userlists/${userID}`);
+
         setMovie(response.data.movie);
+        if (response2.data.lists) setUserLists(response2.data.lists);
       } catch (err) {
         setError("Greška pri učitavanju filma.");
       } finally {
@@ -183,9 +223,22 @@ const Movie = () => {
             {isAdmin && (
               <button className={styles["modal-button"]}>Delete</button>
             )}
-            <button className={styles["modal-button"]}>Add to list</button>
+            <button
+              onClick={openListAddModal}
+              className={styles["modal-button"]}
+            >
+              Add to list
+            </button>
           </div>
         </div>
+        <AddToListModal
+          isOpen={isListAddModalOpen}
+          onClose={closeListAddModal}
+          movieTitle={movie.title}
+          movieID={movie.id}
+          availableLists={userLists}
+          onAdd={handleAddToList}
+        />
       </div>
       <div className={styles["user-reviews"]}>
         <p className={styles["user-reviews-heading"]}>User reviews</p>

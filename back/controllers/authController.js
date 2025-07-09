@@ -117,4 +117,25 @@ const restoreUser = async (req, res) => {
   }
 };
 
-module.exports = { register, login, getUser, deleteUser, restoreUser };
+const userLists = async (req, res) => {
+  const { id } = req.params;
+  try {
+    let lists = await authRepository.getUserLists(id);
+
+    res
+      .status(200)
+      .json({ message: "Uspjesno vracanje lista od korisnika.", lists: lists });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Greška pri vracanju." });
+  }
+};
+
+module.exports = {
+  register,
+  login,
+  getUser,
+  deleteUser,
+  restoreUser,
+  userLists,
+};

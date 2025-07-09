@@ -9,6 +9,7 @@ import Home from "./Home/Home";
 import Movie from "./Movie/Movie";
 import Movies from "./Movies/Movies";
 import UserProfile from "./UserProfile/UserProfile";
+import List from "./List/List";
 import PrivateRoute from "./PrivateRoute";
 
 function App() {
@@ -40,6 +41,15 @@ function App() {
           element={
             <PrivateRoute>
               <UserProfile />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/list/:id"
+          element={
+            <PrivateRoute>
+              <List />
             </PrivateRoute>
           }
         />

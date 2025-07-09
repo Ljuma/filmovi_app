@@ -10,6 +10,7 @@ authRouter.route("/user/:id").get(authController.getUser);
 authRouter.route("/deleteuser/:id").put(authController.deleteUser);
 
 authRouter.route("/restoreuser/:id").put(authController.restoreUser);
+authRouter.route("/userlists/:id").get(authController.userLists);
 
 authRouter
   .route("/register")
