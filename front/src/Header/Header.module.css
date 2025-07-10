@@ -1,12 +1,48 @@
+:root {
+  --boja: #06b6d4;
+}
+
 .section-header {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 2rem 2rem 0 2rem;
-  height: 100%;
-  grid-column: 1/-1;
+  padding: 2rem;
   position: relative;
+  z-index: 1100;
+  grid-column: 1/-1;
+}
+
+.logo {
+  height: 5rem;
+  width: auto;
+}
+
+.hamburger {
+  display: none;
+  font-size: 3rem;
+  background: none;
+  border: none;
+  color: var(--boja);
+  cursor: pointer;
+  z-index: 1200;
+}
+
+.close-btn {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  font-size: 3.5rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .main-nav-list {
@@ -14,33 +50,27 @@
   align-items: center;
   justify-content: center;
   list-style: none;
+  gap: 1rem;
 }
 
 .main-nav-list li {
   padding: 0.3rem 1.5rem;
 }
 
-:root {
-  --boja: #06b6d4;
-}
 .nav-link:link,
 .nav-link:visited {
   display: inline-block;
   text-decoration: none;
-  color: #fff;
   font-size: 1.8rem;
   font-weight: 500;
   transition: all 1s;
-  background-color: none;
   border: 1px solid var(--boja);
   color: var(--boja);
-  /* 
-   #4169E1
-  #008080 
-  #0074d9*/
   border-radius: 9px;
   padding: 0.5rem 2rem;
+  background-color: transparent;
 }
+
 .nav-link:hover,
 .nav-link:active {
   background-color: var(--boja);
@@ -53,6 +83,7 @@
   height: 5rem;
   width: 5rem;
 }
+
 .nav-link-icon,
 .nav-link-icon:hover,
 .nav-link-icon:active {
@@ -68,11 +99,50 @@
 .user-photo {
   height: 4rem;
   width: 4rem;
-
   border-radius: 50px;
 }
 
-.logo {
-  height: 5rem;
-  width: auto;
+@media (max-width: 900px) {
+  .hamburger {
+    display: block;
+  }
+
+  .main-nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .main-nav.open {
+    transform: translateX(0%);
+  }
+
+  .main-nav-list {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 2rem;
+  }
+
+  .main-nav-list li {
+    padding: 1rem 2rem;
+    width: 100%;
+    text-align: center;
+  }
+
+  .nav-link {
+    font-size: 2rem;
+    width: 80%;
+    text-align: center;
+    padding: 1rem 2rem;
+  }
 }

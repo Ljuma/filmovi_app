@@ -166,6 +166,7 @@ const Movie = () => {
     const fetchMovie = async () => {
       try {
         const response = await axios.get(`/movie/${id}`);
+
         const response2 = await axios.get(`/userlists/${userID}`);
         const response3 = await axios.get(`/critics`);
 
@@ -173,12 +174,12 @@ const Movie = () => {
         if (response2.data.lists) setUserLists(response2.data.lists);
 
         if (response3.data.critics) {
-          const ratedCriticNames = response.data.movie.rating.map(
+          const ratedCriticNames = response.data.movie?.rating?.map(
             (r) => r.name
           );
 
-          const availableCritics = response3.data.critics.filter(
-            (critic) => !ratedCriticNames.includes(critic.name)
+          const availableCritics = response3.data.critics?.filter(
+            (critic) => !ratedCriticNames?.includes(critic.name)
           );
 
           setCritics(availableCritics);

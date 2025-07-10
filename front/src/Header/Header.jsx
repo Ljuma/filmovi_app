@@ -11,6 +11,7 @@ class Header extends React.Component {
       userPhoto: null,
       isAdmin: false,
       userID: null,
+      isMobileMenuOpen: false,
     };
   }
 
@@ -21,12 +22,26 @@ class Header extends React.Component {
     this.setState({ userID, userPhoto, isAdmin });
   }
 
+  toggleMobileMenu = () => {
+    this.setState((prevState) => ({
+      isMobileMenuOpen: !prevState.isMobileMenuOpen,
+    }));
+  };
+
   render() {
-    const { userID, userPhoto, isAdmin } = this.state;
+    const { userID, userPhoto, isAdmin, isMobileMenuOpen } = this.state;
     return (
       <header className={style["section-header"]}>
         <img className={style.logo} alt="logo soon" src="/logo.webp" />
-        <nav className={style["main-nav"]}>
+
+        <button className={style["hamburger"]} onClick={this.toggleMobileMenu}>
+          ☰
+        </button>
+        <nav
+          className={`${style["main-nav"]} ${
+            isMobileMenuOpen ? style["open"] : ""
+          }`}
+        >
           <ul className={style["main-nav-list"]}>
             {isAdmin && (
               <li>
@@ -44,16 +59,6 @@ class Header extends React.Component {
               <Link className={style["nav-link"]} to="/movies">
                 Movies
               </Link>
-            </li>
-            <li>
-              <a className={style["nav-link"]} href="#">
-                Gallery
-              </a>
-            </li>
-            <li>
-              <a className={style["nav-link"]} href="aboutUS2/index.html">
-                About Us
-              </a>
             </li>
             <li>
               <Link className={style["nav-link-icon"]} to={`/user/${userID}`}>

@@ -4,6 +4,7 @@ import jwtDecode from "jwt-decode";
 import { Link } from "react-router-dom";
 
 import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 import Slider from "../Slider/Slider";
 import TopRated from "../TopRated/TopRated";
 
@@ -123,7 +124,7 @@ class Home extends React.Component {
           {movies.map((movie) => (
             <Link
               className={style["nav-links"]}
-              to={`/movie/${movie.movie_id}`}
+              to={`/movie/${movie.id}`}
               key={movie.mvie_id}
             >
               <div className={style["movie-card"]}>
@@ -148,6 +149,7 @@ class Home extends React.Component {
             </Link>
           ))}
         </div>
+        <Footer />
       </div>
     );
   }

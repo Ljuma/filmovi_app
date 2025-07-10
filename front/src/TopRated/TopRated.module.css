@@ -34,3 +34,27 @@ img {
   width: 100%;
   height: auto;
 }
+
+@media screen and (max-width: 1528px) {
+  html {
+    font-size: 57%;
+  }
+}
+
+@media screen and (max-width: 1528px) {
+  .section-top-rated {
+    flex-direction: row;
+    justify-content: center;
+    gap: 3rem;
+  }
+
+  .home {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width: 554px) {
+  html {
+    font-size: 50%;
+  }
+}
