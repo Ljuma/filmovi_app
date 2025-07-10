@@ -202,10 +202,16 @@ class Slider extends React.Component {
                   ? style.clone
                   : ""
               }`}
-              key={`${movie.id}-${idx}`} // jedinstveni key za klonove
+              key={`${movie.id}-${idx}`}
               onClick={() => this.props.showMovie(movie.id)}
             >
-              <img src={movie.photo} alt={movie.title} />
+              <img
+                src={
+                  movie.photo.startsWith("http")
+                    ? movie.photo
+                    : `http://localhost:3001/public/moviePhoto/${movie.photo}`
+                }
+              />
               <h3>{movie.title}</h3>
             </div>
           ))}

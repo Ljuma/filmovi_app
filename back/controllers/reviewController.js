@@ -20,4 +20,17 @@ const addReview = async (req, res) => {
   }
 };
 
-module.exports = { addReview };
+const deleteReview = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const results = await reviewRepository.deleteReview(id);
+
+    res.status(200).json({ message: "Uspjesno brisanje." });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Greška pri brisanju." });
+  }
+};
+
+module.exports = { addReview, deleteReview };

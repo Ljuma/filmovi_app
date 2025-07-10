@@ -30,8 +30,8 @@ class Header extends React.Component {
           <ul className={style["main-nav-list"]}>
             {isAdmin && (
               <li>
-                <a className={style["nav-link"]} href="#">
-                  Admin
+                <a className={style["nav-link"]} href="/addmovie">
+                  Add Movie
                 </a>
               </li>
             )}

@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "../api/axios";
 import { useParams } from "react-router-dom";
 import AddToListModal from "../AddToListModal/AddToListModal";
+import AddCriticModal from "../AddCriticModal/AddCriticModal";
 import styles from "./Movie.module.css";
 import { Link } from "react-router-dom";
 import Header from "../Header/Header";
 import MovieRating from "../MovieRating/MovieRating";
+import { useNavigate } from "react-router-dom";
 
 const Movie = () => {
   const { id } = useParams();
@@ -22,9 +24,25 @@ const Movie = () => {
     comment: "",
   });
 
-  const [userLists, setUserLists] = useState([]);
+  const dynamicStyle = (movie) => {
+    if (!movie?.backdrop) return {};
 
+    const isHttp = movie.backdrop.startsWith("http");
+    const url = isHttp
+      ? movie.backdrop
+      : `http://localhost:3001/public/movieBackdrop/${movie.backdrop}`;
+
+    return {
+      backgroundImage: `linear-gradient(to bottom, #000000dc, #000000dc), url("${url}")`,
+      backgroundSize: "cover",
+    };
+  };
+
+  const [userLists, setUserLists] = useState([]);
+  const [critics, setCritics] = useState([]);
+  const navigate = useNavigate();
   const [isListAddModalOpen, setIsListAddModalOpen] = useState(false);
+  const [isCriticAddModalOpen, setIsCriticAddModalOpen] = useState(false);
 
   const openListAddModal = () => {
     setIsListAddModalOpen(true);
@@ -32,6 +50,14 @@ const Movie = () => {
 
   const closeListAddModal = () => {
     setIsListAddModalOpen(false);
+  };
+
+  const openCriticAddModal = () => {
+    setIsCriticAddModalOpen(true);
+  };
+
+  const closeCriticAddModal = () => {
+    setIsCriticAddModalOpen(false);
   };
 
   const handleAddToList = async (movieID, selectedList, listName) => {
@@ -54,6 +80,33 @@ const Movie = () => {
       alert(response2.data.message);
     } catch (err) {
       alert("Greška pri dodavanju na listu.");
+    }
+
+    closeListAddModal();
+  };
+
+  const handleAddCritic = async (
+    movieID,
+    selectedCritic,
+    criticName,
+    rating
+  ) => {
+    try {
+      let criticID = selectedCritic;
+      if (criticName) {
+        const response = await axios.post("/addcritic", { criticName });
+        criticID = response.data.criticID;
+      }
+
+      const response2 = await axios.post(`/addcriticrating`, {
+        criticID,
+        movieID,
+        rating,
+      });
+
+      alert(response2.data.message);
+    } catch (err) {
+      alert("Greška pri dodavanju kritike.");
     }
 
     closeListAddModal();
@@ -114,9 +167,22 @@ const Movie = () => {
       try {
         const response = await axios.get(`/movie/${id}`);
         const response2 = await axios.get(`/userlists/${userID}`);
+        const response3 = await axios.get(`/critics`);
 
         setMovie(response.data.movie);
         if (response2.data.lists) setUserLists(response2.data.lists);
+
+        if (response3.data.critics) {
+          const ratedCriticNames = response.data.movie.rating.map(
+            (r) => r.name
+          );
+
+          const availableCritics = response3.data.critics.filter(
+            (critic) => !ratedCriticNames.includes(critic.name)
+          );
+
+          setCritics(availableCritics);
+        }
       } catch (err) {
         setError("Greška pri učitavanju filma.");
       } finally {
@@ -140,6 +206,32 @@ const Movie = () => {
     return `https://www.youtube.com/embed/${trailerKey}/?autoplay=1&mute=1&start=6&loop=1&playlist=${trailerKey}`;
   }
 
+  const handleDeleteMovie = async (id) => {
+    try {
+      const response = await axios.delete(`/deletemovie/${id}`);
+
+      alert(response.data.message);
+      navigate("/");
+    } catch (err) {
+      alert("Gresaka pri vracanju korisnika!");
+    }
+  };
+  const handleDeleteReview = async (reviewID) => {
+    try {
+      const response = await axios.delete(`/deletereview/${reviewID}`);
+
+      setMovie((prevMovie) => ({
+        ...prevMovie,
+        reviews: (prevMovie.reviews || []).filter(
+          (review) => review.reviewid !== reviewID
+        ),
+      }));
+
+      alert(response.data.message);
+    } catch (err) {
+      alert("Greška pri brisanju komentara!");
+    }
+  };
   if (loading) return <p>Učitavanje filma...</p>;
   if (error) return <p>{error}</p>;
   if (!movie) return <p>Film nije pronađen.</p>;
@@ -147,9 +239,15 @@ const Movie = () => {
   return (
     <div className={styles["movie"]}>
       <Header />
-      <div className={styles["modal"]}>
+      <div className={styles["modal"]} style={dynamicStyle(movie)}>
         <div className={styles["modal-poster"]}>
-          <img src={movie.photo} alt="Movie poster" />
+          <img
+            src={
+              movie.photo.startsWith("http")
+                ? movie.photo
+                : `http://localhost:3001/public/moviePhoto/${movie.photo}`
+            }
+          />
         </div>
 
         <div className={styles["modal-info"]}>
@@ -185,12 +283,12 @@ const Movie = () => {
             {movie?.genres?.map((genre) => (
               <p
                 className={`${styles["modal-genre-tag"]} ${
-                  styles[genre.toLowerCase()]
-                    ? styles[genre.toLowerCase()]
+                  styles[genre.label.toLowerCase()]
+                    ? styles[genre.label.toLowerCase()]
                     : " "
                 }`}
               >
-                {genre}
+                {genre.label}
               </p>
             ))}
           </div>
@@ -215,13 +313,30 @@ const Movie = () => {
           </div>
           <div className={styles["modal-buttons"]}>
             {isAdmin && (
-              <button className={styles["modal-button"]}>Add critic</button>
+              <button
+                onClick={openCriticAddModal}
+                className={styles["modal-button"]}
+              >
+                Add critic
+              </button>
             )}
             {isAdmin && (
-              <button className={styles["modal-button"]}>Update</button>
+              <button className={styles["modal-button"]}>
+                <Link
+                  to={`/editmovie/${movie.id}`}
+                  style={{ color: "inherit", textDecoration: "none" }}
+                >
+                  Update
+                </Link>
+              </button>
             )}
             {isAdmin && (
-              <button className={styles["modal-button"]}>Delete</button>
+              <button
+                onClick={() => handleDeleteMovie(movie.id)}
+                className={styles["modal-button"]}
+              >
+                Delete
+              </button>
             )}
             <button
               onClick={openListAddModal}
@@ -238,6 +353,15 @@ const Movie = () => {
           movieID={movie.id}
           availableLists={userLists}
           onAdd={handleAddToList}
+        />
+
+        <AddCriticModal
+          isOpen={isCriticAddModalOpen}
+          onClose={closeCriticAddModal}
+          movieTitle={movie.title}
+          movieID={movie.id}
+          availableCritics={critics}
+          onAdd={handleAddCritic}
         />
       </div>
       <div className={styles["user-reviews"]}>
@@ -334,7 +458,10 @@ const Movie = () => {
                 <MovieRating rating={review.rating} />
               </div>
               {(userID == review.id || isAdmin) && (
-                <button type="submit" className={styles["comment-delete"]}>
+                <button
+                  onClick={() => handleDeleteReview(review.reviewid)}
+                  className={styles["comment-delete"]}
+                >
                   Delete
                 </button>
               )}

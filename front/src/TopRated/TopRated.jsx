@@ -37,7 +37,13 @@ class TopRated extends React.Component {
             key={movie.id}
             onClick={() => this.props.showMovie(movie.id)}
           >
-            <img src={movie.photo} alt={movie.title} />
+            <img
+              src={
+                movie.photo.startsWith("http")
+                  ? movie.photo
+                  : `http://localhost:3001/public/moviePhoto/${movie.photo}`
+              }
+            />
           </div>
         ))}
       </div>

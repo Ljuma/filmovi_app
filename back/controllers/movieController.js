@@ -40,7 +40,10 @@ const getMovieSingle = async (req, res) => {
     movie.rating = await movieRepository.getMovieRating(id);
 
     let genresDB = await movieRepository.getMovieGenres(id);
-    let genres = genresDB.map((g) => g.name);
+    let genres = genresDB.map((g) => ({
+      value: g.id,
+      label: g.name,
+    }));
     movie.genres = genres;
 
     movie.reviews = await reviewRepository.getMovieReviews(id);
@@ -121,6 +124,101 @@ const filterMovies = async (req, res) => {
   }
 };
 
+const editMovie = async (req, res) => {
+  try {
+    const id = req.params.id;
+    let m = {};
+    const { title, description, trailer, popularity, release_date, runtime } =
+      req.body;
+
+    m.id = id;
+    m.title = title;
+    m.description = description;
+    m.trailer = trailer;
+    m.popularity = popularity;
+    m.release_date = release_date;
+    m.runtime = runtime;
+
+    let genres = [];
+    if (req.body.genres) {
+      genres = JSON.parse(req.body.genres);
+    }
+
+    const existingMovie = await movieRepository.findById(id);
+    if (!existingMovie)
+      return res.status(404).json({ message: "Movie not found" });
+
+    m.photo = existingMovie.photo;
+    m.backdrop = existingMovie.backdrop;
+
+    if (req.files?.photo) {
+      m.photo = req.files.photo[0].filename;
+    }
+    if (req.files?.backdrop) {
+      m.backdrop = req.files.backdrop[0].filename;
+    }
+
+    let response1 = await movieRepository.updateMovie(m);
+    let response2 = await movieRepository.updateGenres(m.id, genres);
+
+    res.json({ message: "Film izmijenjen uspješno" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Greška na serveru" });
+  }
+};
+
+const addMovie = async (req, res) => {
+  try {
+    let m = {};
+    const { title, description, trailer, popularity, release_date, runtime } =
+      req.body;
+
+    m.title = title;
+    m.description = description;
+    m.trailer = trailer;
+    m.popularity = popularity;
+    m.release_date = release_date;
+    m.runtime = runtime;
+    m.photo = null;
+    m.backdrop = null;
+
+    if (req.files?.photo) {
+      m.photo = req.files.photo[0].filename;
+    }
+    if (req.files?.backdrop) {
+      m.backdrop = req.files.backdrop[0].filename;
+    }
+
+    let genres = [];
+    if (req.body.genres) {
+      genres = JSON.parse(req.body.genres);
+    }
+
+    let movieID = await movieRepository.insertMovie(m);
+
+    let response = await movieRepository.addGenres(movieID, genres);
+
+    res.json({ message: "Film izmijenjen uspješno" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Greška na serveru" });
+  }
+};
+
+const deleteMovie = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const results = await movieRepository.deleteMovie(id);
+
+    res.status(200).json({ message: "Uspjesno brisanje." });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Greška pri brisanju." });
+  }
+};
+
 module.exports = {
   getHotMovies,
   getTopRatedMovies,
@@ -128,4 +226,7 @@ module.exports = {
   getAllMovies,
   getMovieSingle,
   filterMovies,
+  editMovie,
+  addMovie,
+  deleteMovie,
 };

@@ -76,7 +76,13 @@ class List extends React.Component {
                   className={style["nav-links"]}
                   key={movie.movie_id}
                 >
-                  <img src={movie.photo} />
+                  <img
+                    src={
+                      movie.photo.startsWith("http")
+                        ? movie.photo
+                        : `http://localhost:3001/public/moviePhoto/${movie.photo}`
+                    }
+                  />
                 </Link>
                 <p className={style["movie-base-title"]}>{movie.title}</p>
                 <div className={style["movie-base-details"]}>

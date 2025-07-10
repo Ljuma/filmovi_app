@@ -10,7 +10,9 @@ import Movie from "./Movie/Movie";
 import Movies from "./Movies/Movies";
 import UserProfile from "./UserProfile/UserProfile";
 import List from "./List/List";
+import AddEditMovie from "./AddEditMovie/AddEditMovie";
 import PrivateRoute from "./PrivateRoute";
+import AdminPrivateRoute from "./AdminPrivateRoute";
 
 function App() {
   return (
@@ -33,6 +35,24 @@ function App() {
             <PrivateRoute>
               <Movie />
             </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/editmovie/:id"
+          element={
+            <AdminPrivateRoute>
+              <AddEditMovie />
+            </AdminPrivateRoute>
+          }
+        />
+
+        <Route
+          path="/addmovie"
+          element={
+            <AdminPrivateRoute>
+              <AddEditMovie />
+            </AdminPrivateRoute>
           }
         />
 

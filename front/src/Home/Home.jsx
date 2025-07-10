@@ -127,7 +127,13 @@ class Home extends React.Component {
               key={movie.mvie_id}
             >
               <div className={style["movie-card"]}>
-                <img src={movie.photo} />
+                <img
+                  src={
+                    movie.photo.startsWith("http")
+                      ? movie.photo
+                      : `http://localhost:3001/public/moviePhoto/${movie.photo}`
+                  }
+                />
                 <p className={style["movie-base-title"]}>{movie.title}</p>
                 <div className={style["movie-base-details"]}>
                   <p className={style["movie-base-year"]}>

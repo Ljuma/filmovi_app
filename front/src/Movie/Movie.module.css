@@ -16,8 +16,8 @@ p {
 
 .modal {
   margin-top: 2rem;
-  background-image: linear-gradient(to bottom, #000000dc, #000000dc),
-    url("https://image.tmdb.org/t/p/w500/gc1C3PKHubLXv3MBk9gd9kbtspL.jpg");
+  /*  background-image: linear-gradient(to bottom, #000000dc, #000000dc),
+    url("https://image.tmdb.org/t/p/w500/gc1C3PKHubLXv3MBk9gd9kbtspL.jpg"); */
   background-size: cover;
   width: 90%;
   border-radius: 5px;
@@ -46,6 +46,8 @@ p {
   display: flex;
   gap: 2rem;
   width: 100%;
+  position: relative;
+  cursor: pointer;
 }
 
 .modal-trailer {
@@ -68,8 +70,8 @@ p {
 .modal-buttons {
   display: flex;
   position: absolute;
-  bottom: 10rem;
-  right: 10rem;
+  bottom: 0;
+  right: 0;
   flex-direction: column;
   gap: 2rem;
   justify-content: flex-end;
@@ -371,9 +373,11 @@ p {
   text-decoration: none;
   transition: all 1s;
   font-size: 1.5rem;
+  cursor: pointer;
 }
 
 .comment-delete {
+  cursor: pointer;
   border: none;
   padding: 0.5rem 2rem;
   font-weight: 400;

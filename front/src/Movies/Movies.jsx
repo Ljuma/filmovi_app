@@ -258,12 +258,18 @@ class Movies extends React.Component {
           <div className={style["movies"]}>
             {movies.map((movie) => (
               <Link
-                to={`/movie/${movie.movie_id}`}
+                to={`/movie/${movie.id}`}
                 className={style["nav-links"]}
                 key={movie.movie_id}
               >
                 <div className={style["movie-card"]}>
-                  <img src={movie.photo} />
+                  <img
+                    src={
+                      movie.photo.startsWith("http")
+                        ? movie.photo
+                        : `http://localhost:3001/public/moviePhoto/${movie.photo}`
+                    }
+                  />
                   <p className={style["movie-base-title"]}>{movie.title}</p>
                   <div className={style["movie-base-details"]}>
                     <p className={style["movie-base-year"]}>

@@ -26,6 +26,9 @@ app.use("/api", genreRouter);
 const listRouter = require("./routers/listRouter");
 app.use("/api", listRouter);
 
+const criticRouter = require("./routers/criticRouter");
+app.use("/api", criticRouter);
+
 app.listen(3001, () => {
   console.log(`Server radi na http://localhost:3001`);
 });

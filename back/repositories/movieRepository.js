@@ -51,7 +51,7 @@ const getMovieRating = async (id) => {
 };
 
 const getMovieGenres = async (id) => {
-  const query = `SELECT g.name FROM movie m INNER JOIN movie_genre mg ON m.ID=mg.movie_id INNER JOIN genre g on g.id=mg.genre_id WHERE m.id=$1`;
+  const query = `SELECT g.id,g.name FROM movie m INNER JOIN movie_genre mg ON m.ID=mg.movie_id INNER JOIN genre g on g.id=mg.genre_id WHERE m.id=$1`;
   const values = [id];
   const result = await dbConnection.query(query, values);
 
@@ -60,10 +60,12 @@ const getMovieGenres = async (id) => {
 
 const getAllMovies = async () => {
   const result = await dbConnection.query(`
-SELECT *
+SELECT m.*,mv.rating
 FROM movie m
-LEFT OUTER JOIN movie_critic mc ON m.id = mc.movie_id
-INNER JOIN critic c ON c.id = mc.critic_id AND c.name LIKE 'IMDB'`);
+LEFT OUTER JOIN (
+  movie_critic mc
+  INNER JOIN critic c ON c.id = mc.critic_id AND c.name = 'IMDB'
+) AS mv ON mv.movie_id = m.id;`);
 
   return result.rows;
 };
@@ -116,6 +118,131 @@ const filterMovies = async (filter) => {
   return result.rows;
 };
 
+const findById = async (id) => {
+  let query = `
+  SELECT * FROM movie WHERE id=$1
+  `;
+
+  params = [id];
+
+  const result = await dbConnection.query(query, params);
+  return result.rows[0];
+};
+
+const updateMovie = async (m) => {
+  let query = `
+    UPDATE movie
+      SET title = $1,
+          description = $2,
+          trailer = $3,
+          popularity = $4,
+          release_date = $5,
+          runtime = $6,
+          photo = $7,
+          backdrop = $8
+      WHERE id = $9
+      `;
+
+  params = [
+    m.title,
+    m.description,
+    m.trailer,
+    m.popularity,
+    m.release_date,
+    m.runtime,
+    m.photo,
+    m.backdrop,
+    m.id,
+  ];
+
+  try {
+    const result = await dbConnection.query(query, params);
+    return result;
+  } catch (err) {
+    console.error("Greška prilikom ažuriranja filma:", err);
+    throw err;
+  }
+};
+
+const updateGenres = async (id, genres) => {
+  try {
+    await dbConnection.query(`DELETE FROM movie_genre WHERE movie_id = $1`, [
+      id,
+    ]);
+    for (const genreId of genres) {
+      await dbConnection.query(
+        `INSERT INTO movie_genre (movie_id, genre_id) VALUES ($1, $2)`,
+        [id, genreId]
+      );
+    }
+    return;
+  } catch (err) {
+    console.error("Greška prilikom ažuriranja filma:", err);
+    throw err;
+  }
+};
+
+const insertMovie = async (m) => {
+  let query = `
+    INSERT INTO movie(title,description,trailer,popularity,release_date,runtime,photo,backdrop)
+        VALUES($1,$2,$3, $4,$5,$6,$7,$8)
+        RETURNING id
+      `;
+
+  params = [
+    m.title,
+    m.description,
+    m.trailer,
+    m.popularity,
+    m.release_date,
+    m.runtime,
+    m.photo,
+    m.backdrop,
+  ];
+
+  try {
+    const result = await dbConnection.query(query, params);
+    return result.rows[0].id;
+  } catch (err) {
+    console.error("Greška prilikom ažuriranja filma:", err);
+    throw err;
+  }
+};
+
+const addGenres = async (movieID, genres) => {
+  try {
+    for (const genreId of genres) {
+      await dbConnection.query(
+        `INSERT INTO movie_genre (movie_id, genre_id) VALUES ($1, $2)`,
+        [movieID, genreId]
+      );
+    }
+    return;
+  } catch (err) {
+    console.error("Greška prilikom ažuriranja filma:", err);
+    throw err;
+  }
+};
+
+const deleteMovie = async (id) => {
+  const query = `
+  DELETE FROM movie WHERE id = $1;
+  `;
+  const values = [id];
+
+  const result = await dbConnection.query(query, values);
+  return result;
+};
+
+const getCritics = async (id) => {
+  const query = `
+  SELECT * FROM critic
+  `;
+
+  const result = await dbConnection.query(query);
+  return result.rows;
+};
+
 module.exports = {
   newestMovies,
   topRatedMovies,
@@ -126,4 +253,11 @@ module.exports = {
   getMovieDefaultRating,
   getExtremeValues,
   filterMovies,
+  findById,
+  updateMovie,
+  updateGenres,
+  insertMovie,
+  addGenres,
+  deleteMovie,
+  getCritics,
 };

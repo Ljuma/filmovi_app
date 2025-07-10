@@ -1,7 +1,7 @@
 const dbConnection = require("./../config/db-config");
 
 const getMovieReviews = async (id) => {
-  const query = `SELECT u.id,u.name,u.photo,"comment",rating FROM movie m INNER JOIN movie_user mu ON m.id=mu.movie_id INNER JOIN "user" u ON u.id=mu.user_id 
+  const query = `SELECT mu.id as reviewID,u.id,u.name,u.photo,"comment",rating FROM movie m INNER JOIN movie_user mu ON m.id=mu.movie_id INNER JOIN "user" u ON u.id=mu.user_id 
       WHERE m.id=$1`;
   const values = [id];
   const result = await dbConnection.query(query, values);
@@ -29,7 +29,18 @@ const insertReview = async (comment) => {
   return result;
 };
 
+const deleteReview = async (id) => {
+  const query = `
+  DELETE FROM movie_user WHERE id = $1;
+  `;
+  const values = [id];
+
+  const result = await dbConnection.query(query, values);
+  return result;
+};
+
 module.exports = {
   getMovieReviews,
   insertReview,
+  deleteReview,
 };
